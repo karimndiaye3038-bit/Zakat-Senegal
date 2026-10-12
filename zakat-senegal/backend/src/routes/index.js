@@ -1,0 +1,21 @@
+import { Router } from 'express';
+import auth from './auth.routes.js';
+import zakat from './zakat.routes.js';
+import settings from './settings.routes.js';
+import payments from './payment.routes.js';
+import transactions from './transaction.routes.js';
+import aidRequests from './aidRequest.routes.js';
+import pub from './public.routes.js';
+import admin from './admin.routes.js';
+
+const r = Router();
+r.get('/health', (req, res) => res.json({ status: 'ok', time: new Date() }));
+r.use('/auth', auth);
+r.use('/zakat', zakat);
+r.use('/settings', settings);
+r.use('/payments', payments);
+r.use('/transactions', transactions);
+r.use('/aid-requests', aidRequests);
+r.use('/admin', admin);
+r.use('/', pub);
+export default r;

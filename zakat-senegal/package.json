@@ -1,0 +1,15 @@
+{
+  "name": "zakat-senegal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plateforme numérique de gestion de la Zakat au Sénégal (backend + frontend)",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend",
+    "dev": "concurrently -n API,WEB -c green,yellow \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "seed": "npm run seed --prefix backend",
+    "seed:demo": "npm run seed:demo --prefix backend",
+    "build": "npm run build --prefix frontend",
+    "start": "npm run start --prefix backend"
+  },
+  "devDependencies": { "concurrently": "^9.0.0" }
+}

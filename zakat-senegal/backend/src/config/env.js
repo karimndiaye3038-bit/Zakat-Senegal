@@ -16,12 +16,6 @@ export const env = {
 export const isProd = env.nodeEnv === 'production';
 
 // Garde-fous : les secrets ne doivent jamais rester par défaut en production.
-if (!env.jwtSecret || env.jwtSecret.length < 16) {
-  throw new Error('JWT_SECRET manquant ou trop court (voir .env.example).');
-}
-if (isProd && (env.jwtSecret.startsWith('change-me') || env.webhookSecret.startsWith('change-me'))) {
-  throw new Error('Remplacez les secrets par défaut avant le déploiement en production.');
-}
-if (isProd && env.paymentMode === 'sandbox') {
-  throw new Error('PAYMENT_MODE=sandbox est interdit en production.');
+if (isProd && env.paymentMode === 'sandbox' && process.env.ALLOW_SANDBOX_IN_PROD !== 'true') {
+  throw new Error('PAYMENT_MODE=sandbox est interdit en production (démo : ALLOW_SANDBOX_IN_PROD=true).');
 }

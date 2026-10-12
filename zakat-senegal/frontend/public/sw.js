@@ -29,13 +29,19 @@ self.addEventListener('fetch', (event) => {
     return;
   }
   // Ressources statiques : cache d'abord, mise à jour en arrière-plan.
+   // Ressources statiques : cache d'abord, mise à jour en arrière-plan.
   if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/icons/')) {
     event.respondWith(
       caches.match(req).then((cached) => {
-        const network = fetch(req).then((res) => {
-          if (res.ok) caches.open(CACHE).then((c) => c.put(req, res.clone()));
-          return res;
-        });
+        const network = fetch(req)
+          .then((res) => {
+            if (res.ok) {
+              const copy = res.clone(); // cloner AVANT de renvoyer la réponse
+              caches.open(CACHE).then((c) => c.put(req, copy));
+            }
+            return res;
+          })
+          .catch(() => cached); // hors ligne : on garde la version en cache
         return cached || network;
       })
     );
